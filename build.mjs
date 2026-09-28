@@ -113,6 +113,12 @@ function gallery() {
 }
 
 const missingLegal = new Set();
+const LEGAL_LABELS = {
+  siret: "SIRET",
+  registration: "Immatriculation",
+  vat: "TVA intracommunautaire",
+  director: "Directeur de la publication",
+};
 
 // Logo : celui choisi dans l'administration, sinon src/assets/img/logo-paintball-lille.*, sinon logo générique.
 const clientLogo =
@@ -343,7 +349,23 @@ function render(str) {
       const v = site.legal[arg];
       if (v) return esc(v);
       missingLegal.add(arg);
-      return '<span class="todo">[à compléter]</span>';
+      return arg === "company" ? esc(site.name) : "";
+    }
+    // Ligne « Libellé : valeur » affichée seulement si la valeur est renseignée.
+    if (name === "legalLine") {
+      const v = site.legal[arg];
+      if (!v) {
+        missingLegal.add(arg);
+        return "";
+      }
+      return `${LEGAL_LABELS[arg]} : ${esc(v)}<br>`;
+    }
+    if (name === "legalMediator") {
+      if (!site.legal.mediator) {
+        missingLegal.add("mediator");
+        return "";
+      }
+      return ` À défaut, il peut recourir gratuitement au médiateur de la consommation : ${esc(site.legal.mediator)}.`;
     }
     if (name === "phoneLabel") return esc(site.phones[arg].label);
     if (name === "from") {
@@ -447,5 +469,5 @@ fs.writeFileSync(
 
 console.log(`Site généré dans ${OUT}/ (${urls.length} pages indexables, ${news.length} actualité(s))`);
 if (missingLegal.size) {
-  console.warn(`⚠ Infos légales à compléter dans src/data/site.json (legal) : ${[...missingLegal].join(", ")}`);
+  console.warn(`⚠ Infos légales non renseignées (masquées sur le site) : ${[...missingLegal].join(", ")}`);
 }
