@@ -5,6 +5,15 @@ import path from "node:path";
 
 const SRC = "src";
 const OUT = "site";
+// Publication dans un sous-dossier (ex. GitHub Pages : BASE_PATH=/paintball-lille) et hors index (NOINDEX=1).
+const BASE = (process.env.BASE_PATH || "").replace(/\/+$/, "");
+const NOINDEX = process.env.NOINDEX === "1";
+const withBase = (text) =>
+  BASE
+    ? text
+        .replace(/(\s(?:href|src|action|data-src))="\/(?!\/)/g, `$1="${BASE}/`)
+        .replace(/url\((['"]?)\/(?!\/)/g, `url($1${BASE}/`)
+    : text;
 const site = JSON.parse(fs.readFileSync(path.join(SRC, "data/site.json"), "utf8"));
 const layout = fs.readFileSync(path.join(SRC, "layout.html"), "utf8");
 
@@ -387,6 +396,10 @@ function parsePage(file) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.cpSync(path.join(SRC, "assets"), path.join(OUT, "assets"), { recursive: true });
 fs.cpSync(path.join(SRC, "admin"), path.join(OUT, "admin"), { recursive: true });
+for (const f of ["assets/css/style.css", "admin/index.html"]) {
+  const p = path.join(OUT, f);
+  fs.writeFileSync(p, withBase(fs.readFileSync(p, "utf8")));
+}
 
 const urls = [];
 const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
@@ -397,13 +410,13 @@ function writePage(meta, body, urlPath, outFile) {
     pageTitle: esc(meta.title),
     pageDescription: esc(meta.description),
     canonical: site.baseUrl + urlPath,
-    robots: meta.noindex ? "noindex" : "index, follow",
+    robots: meta.noindex || NOINDEX ? "noindex, nofollow" : "index, follow",
     jsonLd: ld(jsonLd) + (meta.jsonLd ? "\n" + ld(meta.jsonLd) : ""),
   };
   let html = layout
     .replace(/\{\{(content|pageTitle|pageDescription|canonical|robots|jsonLd)\}\}/g, (_, k) => pageVars[k])
     .replace(/\{\{nav:(\w+)\}\}/g, (_, k) => (k === meta.nav ? ' aria-current="page"' : ""));
-  html = render(html);
+  html = withBase(render(html));
   const dest = path.join(OUT, outFile);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, html);
@@ -464,7 +477,9 @@ fs.writeFileSync(
 );
 fs.writeFileSync(
   path.join(OUT, "robots.txt"),
-  `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${site.baseUrl}/sitemap.xml\n`
+  NOINDEX
+    ? "User-agent: *\nDisallow: /\n"
+    : `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${site.baseUrl}/sitemap.xml\n`
 );
 
 console.log(`Site généré dans ${OUT}/ (${urls.length} pages indexables, ${news.length} actualité(s))`);
