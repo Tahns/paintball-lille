@@ -23,7 +23,7 @@
   },
   "email": "paintball.lille@gmail.com",
   "social": {
-    "facebook": "https://www.facebook.com/paintball.lille",
+    "facebook": "https://www.facebook.com/PlmWillems/",
     "instagram": "https://www.instagram.com/paintball.lille/",
     "tiktok": "https://www.tiktok.com/@paintball.lille"
   },
@@ -32,7 +32,8 @@
     "active": true,
     "title": "Offre automne-hiver",
     "text": "Forfait Découverte à 20 € au lieu de 30 € : 200 billes, environ 1 heure de jeu.",
-    "price": "20 €"
+    "price": "20 €",
+    "until": "2027-03-20"
   },
   "formEndpoint": "",
   "tarifs": {
@@ -145,5 +146,16 @@
     "host": "IONOS SARL, 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, 09 70 80 89 11",
     "deposit": "30 %",
     "freeCancellationDays": "7"
-  }
+  },
+  "reviews": {
+    "rating": "4,9",
+    "count": "460",
+    "source": "Google",
+    "items": []
+  },
+  "images": {
+    "hero": "",
+    "logo": ""
+  },
+  "gallery": []
 }

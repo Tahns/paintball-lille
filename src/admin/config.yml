@@ -1,0 +1,223 @@
+# Configuration de l'administration du site (Sveltia CMS, compatible Decap CMS).
+# Chaque enregistrement crée un commit sur GitHub ; le site est ensuite régénéré et publié automatiquement.
+backend:
+  name: github
+  repo: Tahns/paintball-lille
+  branch: main
+  commit_messages:
+    create: "Admin : ajout de {{collection}} « {{slug}} »"
+    update: "Admin : modification de {{collection}} « {{slug}} »"
+    delete: "Admin : suppression de {{collection}} « {{slug}} »"
+    uploadMedia: "Admin : ajout de l'image {{path}}"
+    deleteMedia: "Admin : suppression de l'image {{path}}"
+
+locale: fr
+media_folder: src/assets/photos/uploads
+public_folder: /assets/photos/uploads
+
+collections:
+  - name: actualites
+    label: Actualités
+    label_singular: Actualité
+    description: Annonces, offres, événements. Les 3 plus récentes apparaissent sur la page d'accueil.
+    folder: src/actualites
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: [date, title]
+    summary: "{{title}} ({{date}})"
+    fields:
+      - { name: title, label: Titre, widget: string }
+      - { name: date, label: Date de publication, widget: datetime, time_format: false, format: "YYYY-MM-DD" }
+      - { name: summary, label: Résumé (1 ou 2 phrases), widget: text, required: false }
+      - { name: image, label: Photo, widget: image, required: false }
+      - { name: draft, label: Brouillon (non publié), widget: boolean, default: false, required: false }
+      - { name: body, label: Texte, widget: markdown, buttons: [bold, italic, link, heading-two, heading-three, bulleted-list, numbered-list], editor_components: [image] }
+
+  - name: reglages
+    label: Infos du site
+    editor: { preview: false }
+    files:
+      - name: site
+        label: Tarifs, promo, contacts, photos, avis, infos légales
+        file: src/data/site.json
+        format: json
+        fields:
+          - { name: name, label: Nom du terrain, widget: string }
+          - { name: baseUrl, label: Adresse du site (ne pas modifier), widget: string }
+          - { name: tagline, label: Slogan, widget: string }
+
+          - name: promo
+            label: Offre du moment
+            widget: object
+            fields:
+              - { name: active, label: Afficher l'offre, widget: boolean }
+              - { name: title, label: Nom de l'offre, widget: string }
+              - { name: text, label: Texte du bandeau, widget: string }
+              - { name: price, label: Prix promo affiché, widget: string }
+              - { name: until, label: Date de fin (l'offre disparaît après), widget: datetime, time_format: false, format: "YYYY-MM-DD", required: false }
+
+          - name: tarifs
+            label: Tarifs
+            widget: object
+            fields:
+              - name: paintball
+                label: Paintball classique (.68)
+                widget: object
+                collapsed: true
+                fields:
+                  - { name: title, label: Titre, widget: string }
+                  - { name: subtitle, label: Sous-titre (calibre, âge, minimum), widget: string }
+                  - { name: phone, label: Numéro affiché, widget: select, options: [{ label: "Paintball / groupes", value: adulte }, { label: "Kids / Expérience", value: kid }] }
+                  - name: items
+                    label: Forfaits
+                    label_singular: Forfait
+                    widget: list
+                    summary: "{{fields.name}} – {{fields.price}}"
+                    fields:
+                      - { name: name, label: Nom, widget: string }
+                      - { name: price, label: "Prix (ex. 30 €)", widget: string }
+                      - { name: promo, label: "Prix pendant l'offre du moment (laisser vide sinon)", widget: string, required: false }
+                      - { name: priceNote, label: Précision sur le prix, widget: string, required: false }
+                      - { name: balls, label: Billes / parties, widget: string }
+                      - { name: duration, label: Durée ou minimum de joueurs, widget: string }
+                      - { name: featured, label: Mettre en avant (« Le plus choisi »), widget: boolean, required: false }
+                      - { name: includes, label: Inclus, widget: list, field: { name: item, label: Élément, widget: string }, required: false }
+                  - { name: extra, label: Note sous les forfaits, widget: string, required: false }
+              - name: experience
+                label: Paintball Expérience (.50)
+                widget: object
+                collapsed: true
+                fields:
+                  - { name: title, label: Titre, widget: string }
+                  - { name: subtitle, label: Sous-titre (calibre, âge, minimum), widget: string }
+                  - { name: phone, label: Numéro affiché, widget: select, options: [{ label: "Paintball / groupes", value: adulte }, { label: "Kids / Expérience", value: kid }] }
+                  - name: items
+                    label: Forfaits
+                    label_singular: Forfait
+                    widget: list
+                    summary: "{{fields.name}} – {{fields.price}}"
+                    fields:
+                      - { name: name, label: Nom, widget: string }
+                      - { name: price, label: "Prix (ex. 30 €)", widget: string }
+                      - { name: promo, label: "Prix pendant l'offre du moment (laisser vide sinon)", widget: string, required: false }
+                      - { name: priceNote, label: Précision sur le prix, widget: string, required: false }
+                      - { name: balls, label: Billes / parties, widget: string }
+                      - { name: duration, label: Durée ou minimum de joueurs, widget: string }
+                      - { name: featured, label: Mettre en avant (« Le plus choisi »), widget: boolean, required: false }
+                      - { name: includes, label: Inclus, widget: list, field: { name: item, label: Élément, widget: string }, required: false }
+                  - { name: extra, label: Note sous les forfaits, widget: string, required: false }
+              - name: kid
+                label: Kid Paintball
+                widget: object
+                collapsed: true
+                fields:
+                  - { name: title, label: Titre, widget: string }
+                  - { name: subtitle, label: Sous-titre (calibre, âge, minimum), widget: string }
+                  - { name: phone, label: Numéro affiché, widget: select, options: [{ label: "Paintball / groupes", value: adulte }, { label: "Kids / Expérience", value: kid }] }
+                  - name: items
+                    label: Forfaits
+                    label_singular: Forfait
+                    widget: list
+                    summary: "{{fields.name}} – {{fields.price}}"
+                    fields:
+                      - { name: name, label: Nom, widget: string }
+                      - { name: price, label: "Prix (ex. 30 €)", widget: string }
+                      - { name: promo, label: "Prix pendant l'offre du moment (laisser vide sinon)", widget: string, required: false }
+                      - { name: priceNote, label: Précision sur le prix, widget: string, required: false }
+                      - { name: balls, label: Billes / parties, widget: string }
+                      - { name: duration, label: Durée ou minimum de joueurs, widget: string }
+                      - { name: featured, label: Mettre en avant (« Le plus choisi »), widget: boolean, required: false }
+                      - { name: includes, label: Inclus, widget: list, field: { name: item, label: Élément, widget: string }, required: false }
+                  - { name: extra, label: Note sous les forfaits, widget: string, required: false }
+          - { name: groupDiscount, label: Remise groupes, widget: string }
+
+          - { name: hours, label: Horaires, widget: string }
+          - name: phones
+            label: Téléphones
+            widget: object
+            fields:
+              - name: adulte
+                label: Paintball, EVG, groupes
+                widget: object
+                fields:
+                  - { name: label, label: Libellé, widget: string }
+                  - { name: display, label: "Numéro affiché (ex. 06 65 62 66 54)", widget: string }
+                  - { name: tel, label: "Numéro international (ex. +33665626654)", widget: string }
+              - name: kid
+                label: Kids, Expérience
+                widget: object
+                fields:
+                  - { name: label, label: Libellé, widget: string }
+                  - { name: display, label: Numéro affiché, widget: string }
+                  - { name: tel, label: Numéro international, widget: string }
+          - { name: email, label: E-mail, widget: string }
+          - name: address
+            label: Adresse
+            widget: object
+            fields:
+              - { name: street, label: Rue, widget: string }
+              - { name: postalCode, label: Code postal, widget: string }
+              - { name: city, label: Ville, widget: string }
+              - { name: region, label: Région, widget: string }
+              - { name: country, label: Pays (code), widget: string }
+          - name: social
+            label: Réseaux sociaux
+            widget: object
+            fields:
+              - { name: facebook, label: Facebook, widget: string }
+              - { name: instagram, label: Instagram, widget: string }
+              - { name: tiktok, label: TikTok, widget: string }
+          - { name: formEndpoint, label: "Adresse d'envoi du formulaire (Formspree, facultatif)", widget: string, required: false }
+
+          - { name: facilities, label: Équipements du terrain, widget: list, field: { name: item, label: Équipement, widget: string } }
+
+          - name: images
+            label: Logo et photo d'accueil
+            widget: object
+            fields:
+              - { name: logo, label: Logo, widget: image, required: false }
+              - { name: hero, label: "Photo d'accueil (paysage, 1920 px)", widget: image, required: false }
+          - name: gallery
+            label: Galerie photos
+            label_singular: Photo
+            widget: list
+            summary: "{{fields.alt}}"
+            fields:
+              - { name: image, label: Photo, widget: image }
+              - { name: alt, label: "Description courte (ex. EVG sur le terrain forêt)", widget: string }
+
+          - name: reviews
+            label: Avis clients
+            widget: object
+            fields:
+              - { name: rating, label: "Note (ex. 4,9)", widget: string }
+              - { name: count, label: Nombre d'avis, widget: string }
+              - { name: source, label: Source, widget: string, default: Google }
+              - name: items
+                label: Avis affichés
+                label_singular: Avis
+                widget: list
+                required: false
+                summary: "{{fields.author}}"
+                fields:
+                  - { name: author, label: Auteur, widget: string }
+                  - { name: rating, label: Note sur 5, widget: number, value_type: int, min: 1, max: 5, default: 5 }
+                  - { name: date, label: "Date (ex. août 2026)", widget: string, required: false }
+                  - { name: text, label: Avis, widget: text }
+
+          - name: legal
+            label: Infos légales
+            widget: object
+            collapsed: true
+            fields:
+              - { name: company, label: Raison sociale et forme juridique, widget: string, required: false }
+              - { name: siret, label: SIRET, widget: string, required: false }
+              - { name: registration, label: "Immatriculation (RCS ou RNE, capital)", widget: string, required: false }
+              - { name: vat, label: TVA intracommunautaire, widget: string, required: false }
+              - { name: director, label: Directeur de la publication, widget: string, required: false }
+              - { name: mediator, label: Médiateur de la consommation, widget: string, required: false }
+              - { name: host, label: Hébergeur, widget: string }
+              - { name: deposit, label: "Acompte (ex. 30 %)", widget: string }
+              - { name: freeCancellationDays, label: Annulation sans frais jusqu'à (jours avant), widget: string }

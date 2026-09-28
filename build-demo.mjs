@@ -20,7 +20,7 @@ const replacements = [
   ["07 66 63 34 60", "06 39 98 00 02"],
   ["+33766633460", "+33639980002"],
   ["paintball.lille@gmail.com", "contact@example.com"],
-  ["https://www.facebook.com/paintball.lille", "#"],
+  ["https://www.facebook.com/PlmWillems/", "#"],
   ["https://www.instagram.com/paintball.lille/", "#"],
   ["https://www.tiktok.com/@paintball.lille", "#"],
 ];
@@ -37,6 +37,12 @@ function relink(html) {
 
 function demoize(html) {
   for (const [from, to] of replacements) html = html.split(from).join(to);
+  // La note Google est celle du vrai terrain : on ne l'attribue pas à la maquette.
+  html = html.replace(/<!--reviews-->[\s\S]*?<!--\/reviews-->/g, "");
+  // Pas de carte (l'adresse est fictive, et l'artifact ne peut pas intégrer Google Maps).
+  html = html.replace(/<!--map-->[\s\S]*?<!--\/map-->/g, "");
+  // Logo générique, jamais celui du vrai terrain.
+  html = html.replace(/<img class="logo__img logo__img--client"[^>]*>/g, '<img class="logo__img" src="/assets/img/logo.svg" alt="" width="44" height="44">');
   return relink(html)
     .replace(/href="https:\/\/www\.google\.com\/maps[^"]*"/g, 'href="#"')
     .replace(/<meta property="og:image"[^>]*>\n?/, "")
@@ -64,6 +70,7 @@ fs.mkdirSync(path.join(OUT, "assets/img"), { recursive: true });
 const pages = [];
 for (const entry of fs.readdirSync(IN, { withFileTypes: true })) {
   let src, name;
+  if (entry.isDirectory() && ["admin", "actualites"].includes(entry.name)) continue;
   if (entry.isDirectory() && fs.existsSync(path.join(IN, entry.name, "index.html"))) {
     src = path.join(IN, entry.name, "index.html");
     name = `${entry.name}.html`;

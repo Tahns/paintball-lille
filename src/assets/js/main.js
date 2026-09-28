@@ -16,6 +16,32 @@ if (toggle && nav) {
   });
 }
 
+// Carte Google Maps chargée seulement au clic (pas de cookie tiers sans action du visiteur)
+document.querySelectorAll(".map-embed").forEach((box) => {
+  const btn = box.querySelector("button");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = box.dataset.src;
+    iframe.title = "Carte d'accès au terrain";
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "no-referrer-when-downgrade";
+    iframe.allowFullscreen = true;
+    box.replaceChildren(iframe);
+  });
+});
+
+// Offre saisonnière : masquée automatiquement après sa date de fin, même sans nouvelle génération du site
+const today = new Date().toISOString().slice(0, 10);
+document.querySelectorAll(".promo[data-until]").forEach((el) => {
+  if (today > el.dataset.until) el.remove();
+});
+document.querySelectorAll(".price[data-until]").forEach((el) => {
+  if (today <= el.dataset.until) return;
+  el.innerHTML = `<span class="price__now">${el.dataset.regular}</span><span class="price__unit">/ pers.</span>`;
+  el.closest(".price-card")?.querySelector(".badge--promo")?.remove();
+});
+
 // Formulaire de réservation
 const form = document.getElementById("booking-form");
 if (form) {
