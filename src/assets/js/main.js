@@ -54,6 +54,11 @@ if (form) {
       data.get("message") || "",
     ];
 
+    if (form.dataset.demo) {
+      setStatus("Maquette de démonstration : aucune demande n'est envoyée.", true);
+      return;
+    }
+
     const endpoint = form.dataset.endpoint;
     if (endpoint) {
       try {

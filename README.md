@@ -17,6 +17,14 @@ node serve.mjs     # aperçu sur http://localhost:8080
 
 Le dossier `site/` est le site prêt à mettre en ligne : on envoie son contenu à la racine de l'hébergement (FTP IONOS, Netlify, OVH…). **Ne modifiez pas `site/` à la main**, modifiez `src/` puis relancez `node build.mjs`.
 
+### Maquette de démonstration
+
+```bash
+node build.mjs && node build-demo.mjs   # génère site-demo/
+```
+
+`site-demo/` est une copie du site avec un nom (« Paintball Démo »), une adresse, des numéros et un e-mail fictifs, un bandeau « maquette » et des pages à plat aux liens relatifs. Elle sert à montrer le design sans pouvoir être confondue avec le vrai site. Le formulaire n'y envoie rien.
+
 ### Modifier un tarif, un numéro, la promo
 
 Tout est dans `src/data/site.json`. Pour couper l'offre automne-hiver : `"promo": { "active": false, … }`.
