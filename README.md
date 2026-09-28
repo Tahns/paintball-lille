@@ -36,6 +36,8 @@ Chaque « Enregistrer » crée une version sur GitHub (on peut toujours revenir 
 
 ## Ce qui est automatique
 
+- **Version en ligne sur GitHub Pages** : à chaque modification de `main`, le site est publié sur `https://tahns.github.io/paintball-lille/`, exclu des moteurs de recherche (pour ne pas concurrencer www.paintball-lille.fr). Si le premier déploiement échoue, activer **Settings → Pages → Source : GitHub Actions** puis relancer le workflow.
+
 - **À chaque modification** (admin ou code) : génération du site, contrôle qualité (`scripts/check.mjs` : liens internes, titres, descriptions, H1, images), puis mise en ligne par FTP si configurée. Une modification qui casserait le site est bloquée avant publication.
 - **Chaque jour** : mise à jour des avis Google (si configurée), retrait de l'offre saisonnière après sa date de fin, année du pied de page.
 - **Dans le navigateur** : l'offre expirée est masquée même si le site n'a pas encore été régénéré.
