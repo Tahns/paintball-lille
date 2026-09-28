@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{pageTitle}}</title>
+<meta name="description" content="{{pageDescription}}">
+<meta name="robots" content="{{robots}}">
+<link rel="canonical" href="{{canonical}}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Paintball Lille">
+<meta property="og:title" content="{{pageTitle}}">
+<meta property="og:description" content="{{pageDescription}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="https://www.paintball-lille.fr/assets/img/og.png">
+<meta name="theme-color" content="#111210">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/style.css">
+<script src="/assets/js/main.js" defer></script>
+{{jsonLd}}
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<div class="topbar">
+  <div class="container topbar__inner">
+    <span>Vendeville · 10 min de Lille · {{hours}}</span>
+    <span class="topbar__phones">
+      Paintball <a href="tel:{{tel:adulte}}">{{phoneDisplay:adulte}}</a>
+      <span aria-hidden="true">·</span>
+      Kids <a href="tel:{{tel:kid}}">{{phoneDisplay:kid}}</a>
+    </span>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="/" aria-label="Paintball Lille, accueil">
+      <img src="/assets/img/logo.svg" alt="" width="44" height="44">
+      <span class="logo__text">Paintball <em>Lille</em></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav">
+      <span class="nav-toggle__bar"></span><span class="sr-only">Menu</span>
+    </button>
+    <nav id="nav" class="nav" aria-label="Menu principal">
+      <ul>
+        <li><a href="/paintball/"{{nav:paintball}}>Paintball</a></li>
+        <li><a href="/paintball-experience/"{{nav:experience}}>Expérience</a></li>
+        <li><a href="/kid-paintball/"{{nav:kid}}>Kids</a></li>
+        <li><a href="/evg-evjf/"{{nav:evg}}>EVG / EVJF</a></li>
+        <li><a href="/groupes/"{{nav:groupes}}>Groupes</a></li>
+        <li><a href="/tarifs/"{{nav:tarifs}}>Tarifs</a></li>
+        <li><a href="/le-terrain/"{{nav:terrain}}>Le terrain</a></li>
+        <li class="nav__cta"><a class="btn btn--primary" href="/reservation/"{{nav:reservation}}>Réserver</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+{{content}}
+</main>
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <a class="logo logo--footer" href="/">
+        <img src="/assets/img/logo.svg" alt="" width="40" height="40">
+        <span class="logo__text">Paintball <em>Lille</em></span>
+      </a>
+      <p>Terrain de paintball de 10 000 m² à Vendeville, à 10 minutes de Lille. Paintball adulte, paintball à impact réduit et Kid Paintball dès 6 ans.</p>
+      <p class="social-row">
+        <a href="{{facebook}}" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.5c0-.4.3-.5 1-.5Z"/></svg></a>
+        <a href="{{instagram}}" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM17.3 5.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg></a>
+        <a href="{{tiktok}}" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.4 2.6 2 4.2 4.4 4.4v3.3c-1.6 0-3-.5-4.3-1.3v6.5A6.1 6.1 0 1 1 10.6 9v3.4a2.8 2.8 0 1 0 2.8 2.8V2h3.2Z"/></svg></a>
+      </p>
+    </div>
+    <div>
+      <h2 class="footer__title">Activités</h2>
+      <ul>
+        <li><a href="/paintball/">Paintball dès 14 ans</a></li>
+        <li><a href="/paintball-experience/">Paintball Expérience dès 12 ans</a></li>
+        <li><a href="/kid-paintball/">Kid Paintball dès 6 ans</a></li>
+        <li><a href="/anniversaire-enfant/">Anniversaire enfant</a></li>
+        <li><a href="/evg-evjf/">EVG / EVJF</a></li>
+        <li><a href="/groupes/">Entreprises, BDE, centres de loisirs</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="footer__title">Infos</h2>
+      <ul>
+        <li><a href="/tarifs/">Tous les tarifs</a></li>
+        <li><a href="/le-terrain/">Le terrain et l'accès</a></li>
+        <li><a href="/galerie/">Galerie</a></li>
+        <li><a href="/faq/">Questions fréquentes</a></li>
+        <li><a href="/reservation/">Réservation et contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="footer__title">Contact</h2>
+      <address>
+        Paintball Lille<br>
+        {{address}}<br>
+        <a href="{{mapsUrl}}" rel="noopener">Itinéraire</a>
+      </address>
+      <p>Paintball : {{phone:adulte}}<br>Kids : {{phone:kid}}<br>{{email}}</p>
+    </div>
+  </div>
+  <div class="container footer__legal">
+    <p>© {{year}} Paintball Lille</p>
+    <p>
+      <a href="/mentions-legales/">Mentions légales</a>
+      <a href="/cgv/">Conditions générales de vente</a>
+      <a href="/confidentialite/">Confidentialité</a>
+    </p>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a href="tel:{{tel:adulte}}" class="mobile-bar__call">Appeler</a>
+  <a href="/reservation/" class="mobile-bar__book">Réserver</a>
+</div>
+</body>
+</html>
