@@ -1,0 +1,68 @@
+name: Site
+
+on:
+  push:
+  pull_request:
+  schedule:
+    # Tous les jours à 5 h (UTC) : avis Google, fin de promo, année du pied de page
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Mettre à jour les avis Google
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
+        run: node scripts/update-reviews.mjs
+
+      - name: Générer le site
+        run: node build.mjs
+
+      - name: Contrôler le site
+        run: node scripts/check.mjs
+
+      - name: Enregistrer les nouveaux avis
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/site.json
+          git diff --cached --quiet || git commit -m "Mise à jour automatique des avis Google"
+          git push
+
+      - name: Mettre le site généré à disposition (téléchargeable depuis l'onglet Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: site/
+          retention-days: 30
+
+      - name: Vérifier la configuration FTP
+        id: ftp
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: echo "enabled=${{ env.FTP_SERVER != '' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Publier sur l'hébergement (FTP)
+        if: steps.ftp.outputs.enabled == 'true' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./site/
+          server-dir: ${{ secrets.FTP_DIR || './' }}
