@@ -5,7 +5,7 @@
 } -->
 {{promo}}
 
-<section class="{{heroClass}}">
+<section class="{{heroClass}}"{{heroStyle}}>
   {{splatA}}{{splatB}}{{splatC}}
   <div class="container">
     <span class="hero__eyebrow">Vendeville · 10 min de Lille</span>
@@ -16,6 +16,7 @@
       <a class="btn btn--ghost btn--lg" href="/tarifs/">Voir les tarifs</a>
     </div>
     <ul class="hero__facts">
+      {{rating}}
       <li><strong>10 000 m²</strong>de terrain</li>
       <li><strong>3</strong>arènes de jeu</li>
       <li><strong>dès 6 ans</strong>avec le Kid Paintball</li>
@@ -131,5 +132,9 @@
     </div>
   </div>
 </section>
+
+{{news}}
+
+{{reviewsSection}}
 
 {{cta}}
