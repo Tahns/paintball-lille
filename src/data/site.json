@@ -134,5 +134,16 @@
     "8 hamacs et zones ombragées",
     "WC secs sur place",
     "Parking gratuit, accès autocar à proximité"
-  ]
+  ],
+  "legal": {
+    "company": "",
+    "siret": "",
+    "registration": "",
+    "vat": "",
+    "director": "",
+    "mediator": "",
+    "host": "IONOS SARL, 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, 09 70 80 89 11",
+    "deposit": "30 %",
+    "freeCancellationDays": "7"
+  }
 }

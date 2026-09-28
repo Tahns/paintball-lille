@@ -54,7 +54,12 @@ L'ancien site se contredisait sur plusieurs points. Les choix retenus sont ci-de
 
 Également à vérifier ou compléter :
 
-- **Mentions légales, CGV, confidentialité** : les champs surlignés en jaune (`[à compléter]`) : raison sociale, SIRET, hébergeur, paiement, acompte, annulation, médiateur. Obligatoire avant la mise en ligne.
+- **Infos légales** : tout est regroupé dans le bloc `legal` de `src/data/site.json`. `node build.mjs` affiche un avertissement tant qu'un champ est vide, et le site affiche « [à compléter] » en jaune à sa place. **Obligatoire avant la mise en ligne** :
+  - `company` : raison sociale et forme juridique (ex. « SAS Paintball Lille »)
+  - `siret`, `registration` (RCS ou RNE, capital), `vat` (TVA, ou « non assujetti »)
+  - `director` : directeur de la publication
+  - `mediator` : médiateur de la consommation auquel l'entreprise adhère (obligatoire pour vendre aux particuliers)
+- **Conditions proposées par défaut dans les CGV**, à valider ou modifier dans `legal` : acompte de 30 %, annulation sans frais jusqu'à 7 jours avant, solde réglé sur place, minimum de joueurs dû en cas d'absents, autorisation parentale pour les mineurs non accompagnés. Hébergeur : IONOS (hébergeur actuel), à changer si le site déménage.
 - **Horaires** : l'ancien site n'en donnait aucun (« sur réservation »).
 - **Réseaux sociaux** : adresses Facebook, Instagram et TikTok à vérifier.
 - **Kid Paintball** : l'ancien site annonçait une fermeture temporaire sans dates, elle n'a pas été reprise.

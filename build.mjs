@@ -107,6 +107,7 @@ function gallery() {
     .join("")}</div>`;
 }
 
+const missingLegal = new Set();
 const hasHeroPhoto = fs.existsSync(path.join(SRC, "assets/photos/hero.jpg"));
 
 const jsonLd = {
@@ -166,6 +167,12 @@ function render(str) {
     if (name === "phone") return phoneLink(arg);
     if (name === "tel") return site.phones[arg].tel;
     if (name === "phoneDisplay") return site.phones[arg].display;
+    if (name === "legal") {
+      const v = site.legal[arg];
+      if (v) return esc(v);
+      missingLegal.add(arg);
+      return '<span class="todo">[à compléter]</span>';
+    }
     if (name === "phoneLabel") return esc(site.phones[arg].label);
     if (name === "from") {
       const nums = site.tarifs[arg].items.map((it) => parseFloat(it.price));
@@ -224,3 +231,6 @@ fs.writeFileSync(
 fs.writeFileSync(path.join(OUT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${site.baseUrl}/sitemap.xml\n`);
 
 console.log(`Site généré dans ${OUT}/ (${urls.length} pages indexables)`);
+if (missingLegal.size) {
+  console.warn(`⚠ Infos légales à compléter dans src/data/site.json (legal) : ${[...missingLegal].join(", ")}`);
+}
